@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knight Card Board Prototype</title>
+    <style>
+        body { background: #111; color: #fff; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
+        .board { background: #1a1a1a; border: 2px solid #444; border-radius: 10px; padding: 10px; max-width: 400px; margin: 0 auto; }
+        .spell-zone { border: 1px dashed #00ffcc; padding: 8px; margin-bottom: 10px; border-radius: 5px; background: rgba(0, 255, 204, 0.05); }
+        .monster-row { display: flex; justify-content: space-around; background: rgba(255, 170, 0, 0.05); border: 1px dashed #ffaa00; padding: 8px; margin-bottom: 10px; border-radius: 5px; min-height: 50px; }
+        .card-slot { width: 70px; height: 90px; border: 1px solid #777; background: #222; font-size: 11px; display: flex; align-items: center; justify-content: center; text-align: center; border-radius: 4px; cursor: pointer; }
+        .card-slot:hover { border-color: #ffaa00; }
+        .avatar-zone { border: 2px solid #ff4444; background: rgba(255, 68, 68, 0.05); padding: 10px; border-radius: 5px; margin-top: 10px; }
+        .avatar-circle { width: 60px; height: 60px; background: #333; border: 2px solid #ff4444; border-radius: 50%; margin: 5px auto; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .hand-box { background: #222; border: 1px solid #555; padding: 10px; margin-top: 15px; border-radius: 8px; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .card-in-hand { background: #333; border: 1px solid #ffaa00; padding: 8px; margin: 5px 0; border-radius: 5px; cursor: pointer; text-align: left; font-size: 12px; }
+        .card-in-hand:hover { background: #444; }
+        .log { background: #000; color: #0f0; padding: 8px; font-family: monospace; font-size: 11px; text-align: left; height: 70px; overflow-y: scroll; border-radius: 5px; margin-top: 10px; max-width: 400px; margin-left: auto; margin-right: auto;}
+    </style>
+</head>
+<body>
+    <h3>🛡️ บอร์ดวางการ์ดอัศวิน</h3>
+    <div class="board">
+        <div class="spell-zone"><small>✨ โซนการ์ดเวทมนตร์</small><div class="card-slot" id="spell-slot">ว่าง</div></div>
+        <small>⚔️ โซนสนามมอนสเตอร์ (แถวบน)</small>
+        <div class="monster-row">
+            <div class="card-slot" onclick="placeCard(0)">ช่อง 1</div>
+            <div class="card-slot" onclick="placeCard(1)">ช่อง 2</div>
+            <div class="card-slot" onclick="placeCard(2)">ช่อง 3</div>
+        </div>
+        <small>⚔️ โซนสนามมอนสเตอร์ (แถวล่าง)</small>
+        <div class="monster-row">
+            <div class="card-slot" onclick="placeCard(3)">ช่อง 4</div>
+            <div class="card-slot" onclick="placeCard(4)">ช่อง 5</div>
+            <div class="card-slot" onclick="placeCard(5)">ช่อง 6</div>
+        </div>
+        <div class="avatar-zone"><small>🚪 ประตูสนาม</small><div class="avatar-circle">ตัวละคร</div></div>
+    </div>
+    <div class="hand-box">
+        <strong>🎴 การ์ดในมือของคุณ:</strong>
+        <div class="card-in-hand" onclick="selectCard('อัศวินฝึกหัด (ATK 1000)')">🗡️ <b>อัศวินฝึกหัด</b> [ATK 1000]</div>
+        <div class="card-in-hand" onclick="selectCard('อัศวินขั้น 1 (ATK 1300)')">🛡️ <b>อัศวินขั้น 1</b> [ATK 1300]</div>
+        <div class="card-in-hand" onclick="selectCard('อัศวินขั้น 5 (ATK 2300)')">👑 <b>อัศวินขั้น 5</b> [ATK 2300]</div>
+    </div>
+    <div class="log" id="logBox">ระบบบอร์ดพร้อมแล้ว!</div>
+<script>
+    let selectedCardName = "";
+    function addLog(text) {
+        let logBox = document.getElementById("logBox");
+        logBox.innerHTML += "<br>" + text;
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+    function selectCard(cardName) {
+        selectedCardName = cardName;
+        addLog("👉 เลือกการ์ดในมือ: " + cardName);
+    }
+    function placeCard(slotIndex) {
+        let slots = document.getElementsByClassName("card-slot");
+        let targetSlot = slots[slotIndex + 1];
+        if (!selectedCardName) { addLog("⚠️ กรุณาเลือกการ์ดจากในมือก่อน!"); return; }
+        targetSlot.innerHTML = selectedCardName;
+        targetSlot.style.borderColor = "#ffaa00";
+        addLog("✅ วาง " + selectedCardName + " สำเร็จ!");
+        selectedCardName = "";
+    }
+</script>
+</body>
+</html>
